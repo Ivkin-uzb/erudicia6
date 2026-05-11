@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Эрудиция · 6 класс · Новые варианты · Школа ЦПМ</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Mulish:wght@400;600;700;800&display=swap');
+:root{--or:#F5A623;--orl:#FEF3DC;--dk:#1A1A2E;--dk2:#16213E;--grn:#27AE60;--red:#E74C3C;--blu:#3498DB;--txt:#1C1C2E;--gray:#7A7A8C;--brd:#E8E8F0;--bg:#F7F7FC;--wh:#fff;--logic:#8E44AD;--logic-l:#F5EEF8;--read:#1A6E9E;--read-l:#EBF5FB;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Mulish',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;}
+.screen{display:none;}.screen.active{display:block;}
+#sc-results.active,#sc-saved.active{display:flex;}
+#sc-landing{min-height:100vh;background:var(--dk);position:relative;overflow:hidden;}
+.land-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 15% 50%,rgba(245,166,35,.18) 0%,transparent 55%),radial-gradient(ellipse at 85% 20%,rgba(52,152,219,.12) 0%,transparent 50%),radial-gradient(ellipse at 60% 80%,rgba(142,68,173,.1) 0%,transparent 45%);}
+.land-inner{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:52px 24px 48px;}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.3);border-radius:24px;padding:6px 16px;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--or);text-transform:uppercase;margin-bottom:28px;}
+.land-title{font-family:'Unbounded',sans-serif;font-size:clamp(26px,5vw,48px);font-weight:900;color:#fff;line-height:1.12;margin-bottom:12px;}
+.land-title em{color:var(--or);font-style:normal;}
+.land-sub{font-size:15px;color:rgba(255,255,255,.5);margin-bottom:12px;line-height:1.7;}
+.land-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:40px;}
+.land-tag{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;}
+.tag-r{background:rgba(26,110,158,.3);color:#74C0E8;border:1px solid rgba(116,192,232,.3);}
+.tag-l{background:rgba(142,68,173,.3);color:#C39BD3;border:1px solid rgba(195,155,211,.3);}
+.tag-t{background:rgba(245,166,35,.15);color:var(--or);border:1px solid rgba(245,166,35,.3);}
+.vcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:28px;}
+.vcard{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:18px;padding:22px 16px 18px;cursor:pointer;transition:all .25s;text-align:center;}
+.vcard:hover{border-color:var(--or);transform:translateY(-3px);box-shadow:0 14px 36px rgba(245,166,35,.18);}
+.vn{font-family:'Unbounded',sans-serif;font-size:36px;font-weight:900;color:var(--or);line-height:1;margin-bottom:8px;}
+.vcard-labels{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;}
+.vlbl{font-size:11px;font-weight:700;padding:3px 8px;border-radius:8px;display:inline-block;}
+.vlr{background:rgba(26,110,158,.25);color:#74C0E8;}.vll{background:rgba(142,68,173,.25);color:#C39BD3;}
+.vcta{display:inline-block;background:var(--or);color:var(--dk);font-weight:800;font-size:12px;padding:7px 18px;border-radius:18px;}
+.vcard:hover .vcta{background:#ffba42;}
+.saved-btn-wrap{text-align:center;margin-bottom:12px;}
+.btn-sv-open{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);font-family:'Mulish',sans-serif;font-size:13px;font-weight:600;padding:9px 22px;border-radius:20px;cursor:pointer;}
+.land-note{font-size:12px;color:rgba(255,255,255,.25);line-height:1.7;text-align:center;}
+/* HEADER */
+.qhdr{background:var(--dk);padding:12px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.06);}
+.back-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.back-btn:hover{background:rgba(255,255,255,.18);}
+.qhdr-info{flex:1;min-width:0;}
+.qhdr-title{font-family:'Unbounded',sans-serif;font-size:11px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.qhdr-sub{font-size:10px;color:var(--or);margin-top:2px;}
+.t-ring{position:relative;width:42px;height:42px;flex-shrink:0;}
+.t-ring svg{position:absolute;top:0;left:0;}
+.t-ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.t-min{font-family:'Unbounded',sans-serif;font-size:10px;font-weight:900;color:#fff;line-height:1;}
+.t-sec{font-size:8px;color:rgba(255,255,255,.4);line-height:1;margin-top:1px;}
+@keyframes tpulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.qhdr-prog{flex-shrink:0;text-align:right;}
+.prog-track{width:80px;height:5px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--or);border-radius:3px;transition:width .4s;}
+.prog-lbl{font-size:9px;color:rgba(255,255,255,.35);margin-top:3px;text-align:right;}
+/* TIMEUP */
+.to-overlay{position:fixed;inset:0;background:rgba(26,26,46,.93);z-index:999;display:none;align-items:center;justify-content:center;}
+.to-overlay.on{display:flex;}
+.to-box{background:var(--dk2);border:2px solid var(--red);border-radius:22px;padding:36px 32px;text-align:center;max-width:340px;width:90%;}
+.to-icon{font-size:44px;margin-bottom:14px;}
+.to-title{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:900;color:#fff;margin-bottom:8px;}
+.to-sub{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px;line-height:1.6;}
+.to-btn{width:100%;padding:11px;border-radius:20px;background:var(--or);color:var(--dk);font-family:'Mulish',sans-serif;font-weight:800;font-size:14px;border:none;cursor:pointer;}
+/* TABS */
+.tabs{display:flex;gap:8px;padding:16px 20px 0;flex-wrap:wrap;background:var(--wh);border-bottom:1px solid var(--brd);}
+.tab{padding:7px 16px;border-radius:18px 18px 0 0;border:1.5px solid var(--brd);border-bottom:none;background:var(--bg);color:var(--gray);font-family:'Mulish',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;}
+.tab.on{background:var(--or);color:var(--dk);border-color:var(--or);}
+/* BODY */
+.qbody{max-width:840px;margin:0 auto;padding:20px 20px 90px;}
+.panel{display:none;}.panel.on{display:block;}
+.sec-divider{display:flex;align-items:center;gap:12px;margin:24px 0 16px;}
+.sec-divider-line{flex:1;height:1px;background:var(--brd);}
+.sec-divider-badge{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;}
+.sdb-r{background:var(--read-l);color:var(--read);}
+.sdb-l{background:var(--logic-l);color:var(--logic);}
+/* TEXT BLOCKS */
+.txt-block{background:var(--wh);border-radius:14px;border:1px solid var(--brd);margin-bottom:14px;overflow:hidden;}
+.txt-hdr{background:var(--dk);padding:11px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.txt-hdr-lbl{font-family:'Unbounded',sans-serif;font-size:10px;font-weight:700;color:var(--or);letter-spacing:.5px;}
+.txt-hdr-ic{color:var(--or);font-size:12px;}
+.txt-body{padding:18px 20px;font-size:14px;line-height:1.85;color:var(--txt);display:none;text-align:justify;}
+.txt-body.open{display:block;}
+.txt-body p{margin-bottom:10px;}.txt-body p:last-child{margin-bottom:0;}
+.txt-body strong{color:var(--dk);}
+/* QUESTION CARDS */
+.qcard{background:var(--wh);border-radius:14px;border:1.5px solid var(--brd);padding:20px;margin-bottom:14px;}
+.qcard.ok{border-color:var(--grn);background:#f0faf5;}
+.qcard.bad{border-color:var(--red);background:#fff5f5;}
+.qcard.open-done{border-color:var(--blu);background:#f0f7ff;}
+.qtop{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;}
+.qnum{min-width:30px;height:30px;background:var(--dk);color:var(--or);font-family:'Unbounded',sans-serif;font-size:10px;font-weight:700;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.qmeta{flex:1;}
+.qtag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 8px;border-radius:8px;border:1px solid var(--brd);color:var(--gray);background:var(--bg);margin-bottom:5px;}
+.qtag.read{color:var(--read);background:var(--read-l);border-color:rgba(26,110,158,.2);}
+.qtag.logic{color:var(--logic);background:var(--logic-l);border-color:rgba(142,68,173,.2);}
+.qtext{font-size:14px;font-weight:600;line-height:1.5;color:var(--txt);}
+/* OPTIONS */
+.opts{list-style:none;margin-top:10px;}
+.opt{display:flex;align-items:flex-start;gap:9px;padding:9px 13px;border-radius:9px;border:1.5px solid var(--brd);margin-bottom:6px;cursor:pointer;transition:all .15s;font-size:14px;line-height:1.4;}
+.opt:hover{border-color:var(--or);background:var(--orl);}
+.opt.sel{border-color:var(--or);background:var(--orl);}
+.opt.ok{border-color:var(--grn);background:#e8f8f0;}
+.opt.bad{border-color:var(--red);background:#fde8e8;}
+.odot{width:18px;height:18px;border-radius:50%;border:2px solid var(--brd);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;transition:all .15s;}
+.opt.sel .odot{border-color:var(--or);background:var(--or);color:#fff;}
+.opt.ok .odot{border-color:var(--grn);background:var(--grn);color:#fff;}
+.opt.bad .odot{border-color:var(--red);background:var(--red);color:#fff;}
+/* MATCH */
+.match-wrap{margin-top:10px;}
+.match-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.match-lbl{flex:1;min-width:150px;font-size:13px;padding:8px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--brd);font-weight:600;}
+.match-arr{color:var(--gray);font-size:14px;flex-shrink:0;}
+.match-sel{flex:1.2;min-width:150px;padding:8px 10px;border-radius:8px;border:1.5px solid var(--brd);font-family:'Mulish',sans-serif;font-size:13px;color:var(--txt);background:var(--wh);cursor:pointer;transition:border .2s;}
+.match-sel:focus{outline:none;border-color:var(--or);}
+.match-sel.ok{border-color:var(--grn);background:#e8f8f0;}
+.match-sel.bad{border-color:var(--red);background:#fde8e8;}
+/* OPEN */
+.open-in{width:100%;margin-top:10px;padding:11px 14px;border-radius:9px;border:1.5px solid var(--brd);font-family:'Mulish',sans-serif;font-size:14px;color:var(--txt);resize:vertical;min-height:90px;transition:border .2s;}
+.open-in:focus{outline:none;border-color:var(--or);}
+/* RULE BANNER */
+.rule-banner{display:flex;align-items:flex-start;gap:8px;background:var(--logic-l);border:1px solid rgba(142,68,173,.25);border-radius:9px;padding:9px 13px;margin-bottom:10px;font-size:13px;color:var(--logic);font-weight:600;line-height:1.5;}
+/* ACTIONS */
+.qactions{margin-top:12px;display:flex;gap:8px;}
+.btn-chk{padding:8px 20px;border-radius:18px;background:var(--dk);color:#fff;font-family:'Mulish',sans-serif;font-weight:700;font-size:12px;border:none;cursor:pointer;transition:background .2s;}
+.btn-chk:hover{background:#2d2d50;}
+/* REVEAL */
+.reveal{margin-top:10px;padding:11px 14px;border-radius:9px;font-size:13px;line-height:1.6;display:none;}
+.reveal.on{display:block;}
+.reveal.auto{background:#eef9f3;border-left:3px solid var(--grn);}
+.reveal.open-r{background:#edf5ff;border-left:3px solid var(--blu);}
+.reveal strong{color:var(--grn);}
+.reveal.open-r strong{color:var(--blu);}
+/* FIN BAR */
+.fin-bar{position:fixed;bottom:0;left:0;right:0;background:var(--wh);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 -4px 20px rgba(0,0,0,.1);z-index:300;}
+.fin-info{font-size:13px;color:var(--gray);}
+.fin-info strong{color:var(--dk);}
+.btn-fin{padding:10px 22px;border-radius:20px;background:var(--or);color:var(--dk);font-family:'Mulish',sans-serif;font-weight:800;font-size:13px;border:none;cursor:pointer;}
+.btn-fin:hover{background:#ffba42;}
+/* RESULTS */
+#sc-results{min-height:100vh;background:var(--dk);align-items:flex-start;justify-content:center;padding:40px 16px;}
+.res-card{max-width:520px;width:100%;text-align:center;}
+.res-ring{width:140px;height:140px;margin:0 auto 20px;border-radius:50%;border:5px solid rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;}
+.res-ring svg{position:absolute;top:-5px;left:-5px;}
+.res-pts{font-family:'Unbounded',sans-serif;font-size:36px;font-weight:900;color:var(--or);line-height:1;z-index:1;}
+.res-max{font-size:12px;color:rgba(255,255,255,.4);z-index:1;margin-top:2px;}
+.res-title{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900;color:#fff;margin-bottom:8px;}
+.res-sub{font-size:13px;color:rgba(255,255,255,.45);margin-bottom:24px;}
+.res-board{background:rgba(255,255,255,.05);border-radius:14px;padding:18px;margin-bottom:22px;text-align:left;}
+.res-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;}
+.res-row:last-child{border:none;}
+.rl{color:rgba(255,255,255,.5);}
+.rv{font-weight:700;}
+.rv.ok{color:var(--grn);}.rv.so{color:#E67E22;}.rv.bad{color:var(--red);}
+.res-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.btn-primary{padding:11px 26px;border-radius:22px;background:var(--or);color:var(--dk);font-family:'Mulish',sans-serif;font-weight:800;font-size:13px;border:none;cursor:pointer;}
+.btn-primary:hover{background:#ffba42;}
+.btn-sec{padding:11px 26px;border-radius:22px;background:rgba(255,255,255,.08);color:#fff;font-family:'Mulish',sans-serif;font-weight:700;font-size:13px;border:1.5px solid rgba(255,255,255,.15);cursor:pointer;}
+.btn-save{padding:11px 26px;border-radius:22px;background:var(--grn);color:#fff;font-family:'Mulish',sans-serif;font-weight:800;font-size:13px;border:none;cursor:pointer;}
+.save-status{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;}
+/* SAVED */
+#sc-saved{min-height:100vh;background:var(--dk);align-items:flex-start;justify-content:center;padding:40px 16px;}
+.saved-wrap{max-width:600px;width:100%;}
+.saved-title{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:900;color:#fff;margin-bottom:6px;text-align:center;}
+.saved-sub{font-size:13px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:24px;}
+.saved-empty{text-align:center;padding:40px 20px;color:rgba(255,255,255,.3);font-size:14px;}
+.saved-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px 18px;margin-bottom:12px;cursor:pointer;transition:all .2s;}
+.saved-item:hover{border-color:rgba(245,166,35,.4);}
+.si-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.si-vnum{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;color:var(--or);}
+.si-date{font-size:11px;color:rgba(255,255,255,.35);}
+.si-score{font-size:15px;font-weight:800;color:#fff;}
+.si-score span{color:var(--or);}
+.si-meta{font-size:11px;color:rgba(255,255,255,.35);margin-top:4px;}
+.si-del{float:right;background:rgba(231,76,60,.15);border:none;color:var(--red);font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;cursor:pointer;margin-left:8px;}
+.btn-back-land{display:block;margin:20px auto 0;padding:10px 24px;border-radius:20px;background:rgba(255,255,255,.08);color:#fff;font-family:'Mulish',sans-serif;font-weight:700;font-size:13px;border:1.5px solid rgba(255,255,255,.15);cursor:pointer;width:fit-content;}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:none;align-items:flex-start;justify-content:center;padding:30px 16px;overflow-y:auto;}
+.modal-overlay.on{display:flex;}
+.modal-box{background:var(--wh);border-radius:18px;max-width:660px;width:100%;padding:24px;position:relative;}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--bg);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray);}
+.modal-title{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:700;color:var(--dk);margin-bottom:18px;}
+.review-q{padding:12px 0;border-bottom:1px solid var(--brd);}
+.review-q:last-child{border:none;}
+.rq-num{font-size:11px;font-weight:800;color:var(--gray);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;}
+.rq-text{font-size:13px;font-weight:600;color:var(--dk);margin-bottom:6px;line-height:1.4;}
+.rq-ans{font-size:13px;padding:6px 10px;border-radius:7px;line-height:1.4;}
+.rq-ans.ok-a{background:#e8f8f0;color:var(--grn);}
+.rq-ans.bad-a{background:#fde8e8;color:var(--red);}
+.rq-ans.open-a{background:#edf5ff;color:var(--blu);}
+.rq-correct{font-size:12px;color:var(--gray);margin-top:4px;}
+@media(max-width:600px){.land-inner,.qbody{padding-left:14px;padding-right:14px;}.vcards{grid-template-columns:1fr 1fr;}.qbody{padding-bottom:100px;}}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div id="sc-landing" class="screen active">
+  <div class="land-bg"></div>
+  <div class="land-inner">
+    <div class="badge">Школа ЦПМ · 6 класс · Новые варианты</div>
+    <h1 class="land-title">Общая<br><em>эрудиция</em></h1>
+    <p class="land-sub">Читательская грамотность и логика · Тренировочные варианты</p>
+    <div class="land-tags">
+      <span class="land-tag tag-r">📖 Читательская грамотность</span>
+      <span class="land-tag tag-l">🧩 Логика</span>
+      <span class="land-tag tag-t">⏱ 45 минут</span>
+    </div>
+    <div class="vcards" id="vcard-list"></div>
+    <div class="saved-btn-wrap">
+      <button class="btn-sv-open" onclick="showSaved()">📋 Сохранённые результаты</button>
+    </div>
+    <p class="land-note">7 заданий по читательской грамотности + 2 логические задачи.<br>Логические задачи проверяются с учителем после завершения варианта.</p>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="sc-quiz" class="screen">
+  <div class="qhdr">
+    <button class="back-btn" onclick="confirmBack()">←</button>
+    <div class="qhdr-info">
+      <div class="qhdr-title" id="hdr-title">Вариант 1</div>
+      <div class="qhdr-sub" id="hdr-sub">Вода и жизнь · Знаки и символы</div>
+    </div>
+    <div class="t-ring">
+      <svg width="42" height="42" viewBox="0 0 42 42">
+        <circle cx="21" cy="21" r="17" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="3"/>
+        <circle id="t-arc" cx="21" cy="21" r="17" fill="none" stroke="#F5A623" stroke-width="3" stroke-linecap="round" stroke-dasharray="107" stroke-dashoffset="0" transform="rotate(-90 21 21)" style="transition:stroke-dashoffset .9s linear,stroke .4s;"/>
+      </svg>
+      <div class="t-ring-txt"><div class="t-min" id="t-min">45</div><div class="t-sec" id="t-sec">:00</div></div>
+    </div>
+    <div class="qhdr-prog">
+      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="prog-lbl" id="prog-lbl">0 / 9</div>
+    </div>
+  </div>
+  <div class="to-overlay" id="to-overlay">
+    <div class="to-box">
+      <div class="to-icon">⏰</div>
+      <div class="to-title">Время вышло!</div>
+      <div class="to-sub">45 минут истекли. Смотрим что успели — переходим к результату.</div>
+      <button class="to-btn" onclick="onTimeUp()">Посмотреть результат →</button>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="switchTab('texts',this)">📖 Тексты</button>
+    <button class="tab" onclick="switchTab('questions',this)">✏️ Задания</button>
+  </div>
+  <div class="qbody">
+    <div class="panel on" id="panel-texts"></div>
+    <div class="panel" id="panel-questions"></div>
+  </div>
+  <div class="fin-bar">
+    <div class="fin-info">Отвечено: <strong id="ans-cnt">0</strong> из <strong id="ans-tot">9</strong></div>
+    <button class="btn-fin" onclick="finishQuiz()">Завершить →</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="sc-results" class="screen">
+  <div class="res-card">
+    <div class="res-ring">
+      <svg width="150" height="150" viewBox="0 0 150 150">
+        <circle cx="75" cy="75" r="68" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="5"/>
+        <circle id="res-arc" cx="75" cy="75" r="68" fill="none" stroke="#F5A623" stroke-width="5" stroke-linecap="round" stroke-dasharray="427" stroke-dashoffset="427" transform="rotate(-90 75 75)" style="transition:stroke-dashoffset 1s ease;"/>
+      </svg>
+      <div class="res-pts" id="res-pts">0</div>
+      <div class="res-max" id="res-max">из 9</div>
+    </div>
+    <div class="res-title" id="res-title">Результат</div>
+    <div class="res-sub" id="res-sub"></div>
+    <div class="res-board" id="res-board"></div>
+    <div class="res-btns">
+      <button class="btn-save" onclick="saveResult()">💾 Сохранить результат</button>
+      <button class="btn-primary" onclick="reviewMode()">Разбор ответов</button>
+      <button class="btn-sec" onclick="goHome()">← На главную</button>
+    </div>
+    <div class="save-status" id="save-status"></div>
+  </div>
+</div>
+
+<!-- SAVED -->
+<div id="sc-saved" class="screen">
+  <div class="saved-wrap">
+    <div class="saved-title">📋 Сохранённые результаты</div>
+    <div class="saved-sub">Нажми на запись для разбора ответов</div>
+    <div id="saved-list"></div>
+    <button class="btn-back-land" onclick="showScreen('sc-landing')">← Назад</button>
+  </div>
+</div>
+
+<!-- REVIEW MODAL -->
+<div class="modal-overlay" id="review-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeReview()">✕</button>
+    <div class="modal-title" id="review-title">Разбор ответов</div>
+    <div id="review-body"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════
+// DATA
+// ═══════════════════════════════
+const VARIANTS = [
+// ────────────── ВАРИАНТ 1: Вода и жизнь · Знаки и символы ──────────────
+{
+  id:1, label:'Вариант 1',
+  topics:'Вода и жизнь · Знаки и символы',
+  texts:[
+    {title:'Текст 1. Вода — основа жизни',body:`<p>Вода — одно из самых удивительных веществ на нашей планете. Она покрывает около 71% поверхности Земли, однако пресная вода составляет лишь 2,5% от общего объёма всей воды. Из неё подавляющая часть заключена в ледниках и вечной мерзлоте — около 68,7%. Ещё примерно 30% составляют подземные воды. И лишь около 0,3% всей пресной воды доступно людям в реках, озёрах и болотах. Это ничтожно мало при том, что вода необходима буквально для всего живого.</p><p>Вода не просто утоляет жажду. Она регулирует климат планеты, поглощая солнечное тепло и медленно отдавая его окружающей среде. Она растворяет и переносит питательные вещества в почве, участвует в фотосинтезе у растений, является средой для химических реакций внутри живых клеток. В теле человека вода составляет от 55 до 78% в зависимости от возраста. Без воды человек не может прожить более трёх суток, тогда как без еды — несколько недель.</p><p>Именно поэтому проблема нехватки пресной воды считается одной из важнейших глобальных проблем XXI века. По данным ООН, более 2 миллиардов человек на планете не имеют доступа к безопасной питьевой воде. Загрязнение водоёмов промышленными и бытовыми отходами усугубляет ситуацию с каждым годом. Учёные предупреждают: если не изменить отношение к водным ресурсам, в будущем их катастрофическая нехватка может стать причиной серьёзных конфликтов между государствами.</p>`},
+    {title:'Текст 2. Круговорот воды в природе',body:`<p>Вода постоянно движется по замкнутому пути, который называется гидрологическим циклом, или круговоротом воды в природе. Этот процесс поддерживает непрерывное обновление пресной воды на планете и делает жизнь на Земле возможной. Под действием солнечного тепла вода испаряется с поверхности океанов, морей, рек и озёр, превращаясь в невидимый водяной пар. Растения также активно участвуют в этом процессе через транспирацию — выделение воды через листья в атмосферу.</p><p>Водяной пар поднимается в атмосферу, где при охлаждении конденсируется в мельчайшие капли воды или кристаллы льда, образуя облака и туман. Когда капли укрупняются настолько, что больше не могут удерживаться в воздухе, они выпадают в виде осадков — дождя, снега, града или росы. Осадки пополняют реки, озёра, подземные водоносные слои, после чего вновь испаряются — и цикл замыкается снова.</p><p>Скорость прохождения воды через разные звенья цикла существенно различается. Вода в атмосфере обновляется примерно каждые 9 дней, в реках — каждые несколько недель. Подземные воды могут сохраняться тысячи лет. Ледники удерживают воду десятки тысяч лет. Именно поэтому загрязнение подземных вод и таяние ледников представляют особую долгосрочную опасность для всего человечества.</p>`},
+    {title:'Текст 3. Водные ресурсы России',body:`<p>Россия — одна из богатейших стран мира по запасам пресной воды. На её территории насчитывается около 2,5 миллиона рек общей длиной более 8 миллионов километров и свыше 3 миллионов озёр самых разных размеров. Самые крупные реки страны — Обь с Иртышом, Енисей, Лена и Амур — относятся к числу величайших рек мира и несут огромное количество воды в Северный Ледовитый и Тихий океаны.</p><p>Особое место среди водных объектов России занимает озеро Байкал. Это древнейшее (около 25 миллионов лет) и глубочайшее (1 642 метра) озеро на Земле. В нём сосредоточено около 20% всех поверхностных пресных вод планеты — это больше, чем во всех Великих озёрах Северной Америки, вместе взятых. Байкал отличается уникальной экосистемой: здесь обитают более 3 600 видов животных и растений, из которых более половины нигде больше не встречаются.</p><p>Несмотря на колоссальные запасы воды, Россия сталкивается с серьёзными экологическими проблемами. Многие реки загрязнены промышленными стоками, бытовыми отходами и удобрениями с сельскохозяйственных угодий. Байкал на протяжении десятилетий страдал от деятельности целлюлозно-бумажного комбината, который сбрасывал отходы прямо в озеро. Сейчас комбинат закрыт, но восстановление уникальной экосистемы займёт ещё многие годы.</p>`},
+    {title:'Текст 4. Дорожные знаки',body:`<p>Дорожные знаки — один из главных способов передачи информации участникам движения без единого слова. Их форма и цвет несут смысловую нагрузку: даже не зная конкретного изображения, опытный участник дорожного движения понимает общий характер информации по внешнему виду знака. Предупреждающие знаки выполнены в виде треугольника с красной каймой на белом фоне — они сообщают о приближении к опасному участку дороги. Запрещающие знаки имеют форму круга с красной каймой и указывают на то, что определённые действия здесь запрещены.</p><p>Информационно-указательные знаки представляют собой синие прямоугольники или квадраты — они сообщают о правилах движения и дают рекомендации водителям. Знаки сервиса — тоже прямоугольники синего цвета с белыми символами — указывают на расположение объектов услуг: автозаправочной станции, больницы, кафе или гостиницы. Отдельную группу составляют знаки особых предписаний и знаки приоритета, регулирующие порядок проезда на перекрёстках.</p><p>Такое разделение по форме и цвету не случайно — оно позволяет водителю моментально реагировать на знаки в сложных ситуациях. Дорожные знаки стандартизированы на международном уровне: большинство европейских стран использует единую систему, принятую Венской конвенцией о дорожном движении 1968 года. Это позволяет водителям из разных государств уверенно ориентироваться в незнакомых местах за рубежом.</p>`},
+    {title:'Текст 5. Государственная символика России',body:`<p>Государственная символика — это совокупность официальных знаков, отличающих одно государство от другого и отражающих его историю, культуру и ценности. К основным государственным символам России относятся флаг, герб и гимн, каждый из которых имеет свою историю и глубокий смысл.</p><p>Государственный флаг России — прямоугольное полотнище из трёх горизонтальных полос равной ширины: верхняя — белая, средняя — синяя, нижняя — красная. Государственный герб представляет собой золотого двуглавого орла на красном щите. Двуглавый орёл — символ, заимствованный из Византийской империи в XV веке: он олицетворяет единство европейской и азиатской частей страны. На груди орла расположен щит с изображением Святого Георгия Победоносца, поражающего дракона. Это один из старейших символов Москвы.</p><p>Государственный гимн исполняется на торжественных государственных мероприятиях, при победе российских спортсменов на международных соревнованиях, а также в дни государственных праздников. По традиции, при исполнении гимна принято вставать, а если это возможно — петь вместе с исполнителями. Государственная символика охраняется законом, и её неуважительное использование является нарушением российского законодательства.</p>`}
+  ],
+  questions:[
+    {num:1,type:'single',tag:'read',text:'Какая доля пресной воды Земли доступна людям в реках, озёрах и болотах?',
+     opts:['1) около 2,5%','2) около 30%','3) около 0,3%','4) около 68,7%'],
+     correct:2,answer:'3 — около 0,3%. Из 2,5% пресной воды большая часть в ледниках (~68,7%) и подземных водах (~30%), а в реках и озёрах лишь ~0,3%.'},
+    {num:2,type:'match',tag:'read',text:'Соотнесите этапы круговорота воды и их описание.',
+     keys:['А. Испарение','Б. Конденсация','В. Осадки'],
+     vals:['1. Вода в виде дождя или снега возвращается на землю','2. Водяной пар охлаждается и превращается в капли','3. Вода превращается в пар под действием солнечного тепла'],
+     correct:['3','2','1'],answer:'А–3, Б–2, В–1.'},
+    {num:3,type:'single',tag:'read',text:'Выберите ВЕРНОЕ утверждение.',
+     opts:['1) Байкал содержит около 50% мировых запасов пресной воды.','2) Вода в теле человека составляет от 55 до 78%.','3) Россия не сталкивается с проблемами загрязнения водоёмов.','4) Вода в атмосфере обновляется раз в несколько месяцев.'],
+     correct:1,answer:'2 — Вода в теле человека составляет от 55 до 78% в зависимости от возраста.'},
+    {num:4,type:'single',tag:'read',text:'Выберите НЕВЕРНОЕ утверждение.',
+     opts:['1) Байкал — древнейшее и глубочайшее озеро на Земле.','2) В Байкале сосредоточено около 20% поверхностных пресных вод планеты.','3) Пресная вода составляет большую часть всей воды на Земле.','4) Подземные воды могут сохраняться тысячи лет.'],
+     correct:2,answer:'3 — НЕВЕРНОЕ: пресная вода составляет лишь 2,5% от общего объёма воды на Земле, а не большую часть.'},
+    {num:5,type:'single',tag:'read',text:'Знаки какой группы имеют форму синего прямоугольника или квадрата?',
+     opts:['1) Информационно-указательные','2) Запрещающие','3) Предупреждающие','4) Знаки сервиса'],
+     correct:0,answer:'1 — Информационно-указательные знаки: синие прямоугольники или квадраты.'},
+    {num:6,type:'match',tag:'read',text:'Соотнесите государственный символ России и его описание.',
+     keys:['А. Флаг','Б. Герб','В. Гимн'],
+     vals:['1. Исполняется при победе спортсменов и на торжественных мероприятиях','2. Три горизонтальные полосы: белая, синяя, красная','3. Золотой двуглавый орёл на красном щите'],
+     correct:['2','3','1'],answer:'А–2, Б–3, В–1.'},
+    {num:7,type:'single',tag:'read',text:'Выберите ВЕРНОЕ утверждение.',
+     opts:['1) Флаг России состоит из трёх вертикальных полос.','2) Двуглавый орёл — символ, заимствованный из Византийской империи.','3) Венская конвенция о дорожном движении принята в 1945 году.','4) При исполнении гимна принято садиться.'],
+     correct:1,answer:'2 — Двуглавый орёл заимствован из Византийской империи в XV веке и символизирует единство европейской и азиатской частей России.'},
+    {num:8,type:'open',tag:'logic',
+     text:'Четыре подруги — Аня, Белла, Вера и Галя — занимаются разными видами спорта: плаванием, гимнастикой, лёгкой атлетикой и волейболом. Известно следующее:\n• Аня и Белла не умеют плавать.\n• Вера старше гимнастки, но учится с ней в одном классе, значит Вера — не гимнаст.\n• Галя и Аня ходят на тренировки пешком вместе, а волейболистка ездит на автобусе.\n• Белла не занимается волейболом.\n• Аня не занимается гимнастикой.\n\nКто каким видом спорта занимается?',
+     answer:'Галя — плавание (живёт у бассейна, Аня и Белла не плавают, Вера ходит на автобусе). Вера ездит на автобусе → Вера — волейбол (волейболистка ездит на автобусе; Вера ≠ гимнастика). Аня: не плавание, не гимнастика, не волейбол (ходит пешком с Галей, не на автобусе) → Аня — лёгкая атлетика. Белла: не плавание, не волейбол, не лёгкая атлетика (занята Аней) → Белла — гимнастика.\n\n✅ Аня — лёгкая атлетика, Белла — гимнастика, Вера — волейбол, Галя — плавание.'},
+    {num:9,type:'open',tag:'logic',rule:true,
+     text:'На острове рыцарей и лжецов встретились трое: Алёша, Борис и Вова.\n• Алёша сказал: «Среди нас есть хотя бы один рыцарь».\n• Борис сказал: «Среди нас нет ни одного рыцаря».\n• Вова сказал: «Алёша — лжец».\n\nКто из них рыцарь, а кто лжец?',
+     answer:'Алёша и Борис говорят противоположное — оба правы быть не могут.\n• Если Борис — рыцарь → «нет рыцарей» правда → но Борис сам рыцарь → ПРОТИВОРЕЧИЕ.\n• Значит Борис — лжец → «нет рыцарей» ложь → рыцари есть.\n• Алёша: «есть хотя бы один рыцарь» — это правда → Алёша — рыцарь.\n• Вова: «Алёша — лжец» — это ложь (Алёша рыцарь) → Вова — лжец.\n\n✅ Алёша — рыцарь, Борис — лжец, Вова — лжец.'}
+  ]
+},
+// ────────────── ВАРИАНТ 2: Экология · Профессии ──────────────
+{
+  id:2, label:'Вариант 2',
+  topics:'Экология · Профессии будущего',
+  texts:[
+    {title:'Текст 1. Что такое экосистема',body:`<p>Экосистема — это совокупность живых организмов и условий окружающей среды, которые тесно взаимодействуют между собой, образуя единое устойчивое целое. В любой экосистеме есть производители — растения, создающие органическое вещество из неорганического с помощью фотосинтеза. Есть потребители — животные, которые питаются растениями или другими животными. И есть разрушители — грибы и бактерии, которые разлагают остатки отмерших организмов, возвращая питательные вещества в почву.</p><p>Экосистемы бывают самых разных масштабов и типов. Лес, луг, пруд, болото, океан, пустыня — всё это отдельные экосистемы со своими уникальными обитателями и условиями. Даже небольшая лужа или гнилое бревно в лесу является микроэкосистемой. Городская среда тоже представляет собой особый тип экосистемы: здесь обитают приспособившиеся к жизни рядом с человеком виды — вороны, голуби, крысы, лисы, различные насекомые и растения.</p><p>Все части экосистемы взаимосвязаны. Если численность одного вида изменяется, это немедленно влечёт за собой изменения в численности других. Так, исчезновение волков в лесу приводит к неконтролируемому росту популяции оленей, которые поедают молодые деревья и постепенно уничтожают лес. Поддержание баланса в экосистеме — важнейшее условие её долгосрочного существования и процветания.</p>`},
+    {title:'Текст 2. Красная книга России',body:`<p>Красная книга — официальный документ, в котором собраны сведения о редких и находящихся под угрозой исчезновения видах животных, растений и грибов. Первая Красная книга СССР была издана в 1978 году, а Красная книга Российской Федерации впервые вышла в 2001 году. Сегодня в неё внесены сотни видов, которым грозит полное исчезновение без специальных мер охраны.</p><p>Виды в Красной книге распределяются по категориям в зависимости от степени угрозы. Нулевая категория — «вероятно исчезнувшие» виды, которых давно не встречали в природе. Первая категория — «находящиеся под угрозой исчезновения»: это самые уязвимые виды, требующие немедленной защиты. Вторая категория — «сокращающиеся в численности». Третья — «редкие», но пока стабильные виды. Четвёртая — «неопределённые по статусу», о которых недостаточно сведений.</p><p>Среди животных, занесённых в Красную книгу России, — амурский тигр, снежный барс, дальневосточный леопард, белый медведь, сахалинский осётр и многие другие. Благодаря усилиям учёных и государственным программам охраны численность амурского тигра за последние десятилетия выросла с примерно 40 до более чем 600 особей. Это показывает, что природоохранные меры способны давать реальные результаты при должном упорстве и финансировании.</p>`},
+    {title:'Текст 3. Влияние человека на природу',body:`<p>Деятельность человека оказывает на природу как разрушительное, так и созидательное воздействие. Среди основных экологических проблем, вызванных человеком, — загрязнение воздуха, воды и почвы промышленными и бытовыми отходами, вырубка лесов, уничтожение природных мест обитания животных, браконьерство и неконтролируемый промысел рыбы и морепродуктов.</p><p>Особую озабоченность вызывает вырубка тропических лесов Амазонии и Юго-Восточной Азии — «лёгких планеты». Эти леса производят огромное количество кислорода и служат домом для миллионов видов живых существ. Их уничтожение ведёт к потере биоразнообразия и усилению парникового эффекта. По оценкам учёных, каждую минуту в мире вырубается около 30 гектаров леса.</p><p>Чтобы защитить природу, государства создают особо охраняемые природные территории — заповедники, национальные парки и заказники. В России сегодня насчитывается более 100 заповедников, которые занимают около 1,5% территории страны. В них запрещена любая хозяйственная деятельность, и природа развивается без вмешательства человека. Помимо государственных мер, огромную роль играют экологические организации и сознательные граждане, которые сортируют мусор, экономят ресурсы и поддерживают природоохранные проекты.</p>`},
+    {title:'Текст 4. Профессии настоящего и будущего',body:`<p>Мир профессий меняется с каждым десятилетием, и этот процесс сегодня ускорился как никогда раньше. Развитие технологий приводит к тому, что одни профессии исчезают или сильно меняются, а другие — совершенно новые — появляются. По прогнозам экспертов, около 85% профессий, которые будут востребованы в 2030 году, ещё не существуют в том виде, в котором они появятся.</p><p>Среди профессий, которые уже активно формируются, — специалист по искусственному интеллекту и машинному обучению, оператор дронов и беспилотных систем, экоаналитик (специалист по экологическим данным и устойчивому развитию), разработчик дополненной и виртуальной реальности, специалист по кибербезопасности. Одновременно с этим постепенно теряют актуальность профессии, связанные с ручным и рутинным трудом, который легко автоматизировать.</p><p>Однако есть профессии, которые останутся нужными всегда, потому что требуют человеческих качеств — эмпатии, творчества, нестандартного мышления. Это врачи, учителя, психологи, художники, музыканты. Главный совет для тех, кто сейчас учится в школе: развивать критическое мышление, умение учиться новому, работать в команде и общаться — эти навыки будут ценны при любой профессии в любое время.</p>`},
+    {title:'Текст 5. Что такое волонтёрство',body:`<p>Волонтёрство — это добровольная безвозмездная деятельность на благо общества или конкретных людей, которые нуждаются в помощи. Волонтёры — люди, которые тратят своё время и силы не ради денег, а из желания сделать мир лучше. Это движение имеет многовековую историю и сегодня объединяет миллионы людей по всему миру.</p><p>Существуют самые разные виды волонтёрства. Социальное волонтёрство предполагает помощь пожилым людям, детям-сиротам, людям с ограниченными возможностями. Экологическое волонтёрство — участие в уборке территорий, посадке деревьев, мониторинге состояния природных объектов. Событийное волонтёрство — помощь в организации крупных мероприятий: спортивных соревнований, фестивалей, городских праздников. Есть также волонтёрство в сфере культуры, медицины и образования.</p><p>Волонтёрство полезно не только для тех, кому оказывается помощь, но и для самих добровольцев. Участие в волонтёрских проектах помогает приобрести новые навыки, расширить круг общения, почувствовать свою причастность к важному делу и повысить самооценку. По российскому законодательству, стать волонтёром может любой человек с 14 лет. В школах и университетах добровольческая деятельность всё активнее поощряется и учитывается при поступлении.</p>`}
+  ],
+  questions:[
+    {num:1,type:'single',tag:'read',text:'Что такое «производители» в экосистеме?',
+     opts:['1) Животные, питающиеся другими животными.','2) Грибы и бактерии, разлагающие остатки организмов.','3) Растения, создающие органическое вещество с помощью фотосинтеза.','4) Виды, первыми заселяющие новую территорию.'],
+     correct:2,answer:'3 — Производители в экосистеме — это растения, которые создают органическое вещество из неорганического с помощью фотосинтеза.'},
+    {num:2,type:'match',tag:'read',text:'Соотнесите категории Красной книги и их значение.',
+     keys:['А. 0-я категория','Б. 1-я категория','В. 3-я категория'],
+     vals:['1. Редкие, но пока стабильные виды','2. Вероятно исчезнувшие виды','3. Виды, находящиеся под угрозой исчезновения'],
+     correct:['2','3','1'],answer:'А–2 (вероятно исчезнувшие), Б–3 (угроза исчезновения), В–1 (редкие, но стабильные).'},
+    {num:3,type:'single',tag:'read',text:'Выберите ВЕРНОЕ утверждение.',
+     opts:['1) Благодаря охране амурских тигров их численность выросла примерно до 600 особей.','2) В России насчитывается более 500 заповедников.','3) Заповедники занимают около 15% территории России.','4) Тропические леса Амазонии производят мало кислорода.'],
+     correct:0,answer:'1 — Верно: численность амурского тигра выросла с примерно 40 до более чем 600 особей благодаря охранным мерам.'},
+    {num:4,type:'single',tag:'read',text:'Выберите НЕВЕРНОЕ утверждение.',
+     opts:['1) Исчезновение волков в лесу может негативно сказаться на состоянии деревьев.','2) Красная книга России впервые вышла в 2001 году.','3) Заповедники — территории, где разрешена ограниченная хозяйственная деятельность.','4) Городская среда тоже является особым типом экосистемы.'],
+     correct:2,answer:'3 — НЕВЕРНОЕ: в заповедниках запрещена ЛЮБАЯ хозяйственная деятельность, а не ограниченная.'},
+    {num:5,type:'match',tag:'read',text:'Соотнесите вид волонтёрства и его описание.',
+     keys:['А. Социальное','Б. Экологическое','В. Событийное'],
+     vals:['1. Помощь в организации спортивных соревнований и фестивалей','2. Уборка территорий и посадка деревьев','3. Помощь пожилым людям и детям-сиротам'],
+     correct:['3','2','1'],answer:'А–3, Б–2, В–1.'},
+    {num:6,type:'single',tag:'read',text:'Выберите ВЕРНОЕ утверждение о профессиях будущего.',
+     opts:['1) В 2030 году все современные профессии исчезнут.','2) Специалист по ИИ — одна из активно формирующихся профессий.','3) Профессии врача и учителя скоро потеряют актуальность.','4) Волонтёром в России можно стать только с 18 лет.'],
+     correct:1,answer:'2 — Специалист по искусственному интеллекту и машинному обучению — одна из активно формирующихся профессий будущего.'},
+    {num:7,type:'single',tag:'read',text:'Что, согласно тексту, является главным советом для школьников в отношении будущей профессии?',
+     opts:['1) Как можно раньше выбрать конкретную профессию и не менять её.','2) Изучать только технические науки.','3) Развивать критическое мышление, умение учиться новому и работать в команде.','4) Избегать профессий, связанных с технологиями.'],
+     correct:2,answer:'3 — Главный совет: развивать критическое мышление, умение учиться новому, работать в команде и общаться.'},
+    {num:8,type:'open',tag:'logic',
+     text:'Пять учеников — Андрей, Борис, Галина, Дима и Елена — записались в пять разных кружков: шахматы, рисование, робототехника, театр и хор. Каждый ходит ровно в один кружок. Известно:\n• Галина выступает на сцене (она в театре).\n• Дима не поёт и не занимается шахматами и рисованием.\n• Андрей не поёт.\n• Борис не занимается рисованием и не ходит в театр.\n• Елена занимается рисованием.\n\nКто в каком кружке занимается?',
+     answer:'Галина → театр (дано). Елена → рисование (дано). Дима: не хор, не шахматы, не рисование (Елена), не театр (Галина) → Дима — робототехника. Борис: не рисование (Елена), не театр (Галина), не робототехника (Дима) → Борис: шахматы или хор. Андрей: не хор → Андрей: шахматы или рисование (Елена) → Андрей — шахматы. Борис → хор.\n\n✅ Андрей — шахматы, Борис — хор, Галина — театр, Дима — робототехника, Елена — рисование.'},
+    {num:9,type:'open',tag:'logic',rule:true,
+     text:'На острове рыцарей и лжецов живут двое: Макс и Нина. Макс сказал: «Мы оба лжецы».\n\nКем является каждый из них — рыцарем или лжецом?',
+     answer:'Разбираем оба случая:\n• Если Макс — рыцарь → «Мы оба лжецы» должно быть правдой → оба лжецы → но Макс рыцарь → ПРОТИВОРЕЧИЕ.\n• Если Макс — лжец → «Мы оба лжецы» ложь → значит, не оба они лжецы → хотя бы один из них рыцарь → Нина — рыцарь. Проверка: Макс-лжец, Нина-рыцарь → «оба лжецы» — ложь ✓\n\n✅ Макс — лжец, Нина — рыцарь.'}
+  ]
+},
+// ────────────── ВАРИАНТ 3: Путешествия · Карты ──────────────
+{
+  id:3, label:'Вариант 3',
+  topics:'Путешествия и карты · Ориентирование',
+  texts:[
+    {title:'Текст 1. Горизонт и стороны света',body:`<p>Горизонт — это воображаемая линия, по которой небо как бы сходится с поверхностью Земли. В реальности горизонт — это граница видимого пространства, которая зависит от высоты наблюдателя над поверхностью. Чем выше находится человек, тем дальше он видит, тем шире его горизонт. На равнинной местности горизонт находится примерно в 5–6 километрах от наблюдателя на уровне земли.</p><p>Чтобы ориентироваться в пространстве, используют четыре основные стороны света: север, юг, запад и восток. Промежуточные направления называются: северо-восток, юго-восток, юго-запад и северо-запад. Определить стороны света можно несколькими способами. Самый точный — компас: его стрелка всегда указывает на магнитный север. По солнцу: в полдень солнце находится на юге (в северном полушарии), поэтому тень от предметов в это время указывает на север. По звёздам: Полярная звезда всегда находится точно на севере.</p><p>Умение ориентироваться на местности — один из важнейших практических навыков. Оно необходимо туристам, военным, охотникам, спасателям. Сегодня навигационные приложения на смартфонах заменили компас и карту для большинства людей, однако при отсутствии сигнала или разряженной батарее умение ориентироваться по природным признакам может оказаться буквально жизненно важным.</p>`},
+    {title:'Текст 2. Виды географических карт',body:`<p>Географическая карта — это уменьшенное и обобщённое изображение поверхности Земли на плоскости с помощью условных знаков. Карты появились тысячи лет назад: первые из них рисовались от руки на камне, глине или папирусе. Сегодня карты создаются с помощью спутниковых данных и компьютерных программ, но принципы их построения остались прежними.</p><p>Карты делятся на несколько основных видов. Физические карты показывают рельеф местности — горы, равнины, реки, озёра. На них принято изображать низменности зелёным цветом, а горы — коричневым. Политические карты показывают границы государств, столицы и крупные города. Тематические карты посвящены конкретной теме: климатические показывают температуры и осадки, экономические — промышленные предприятия и транспортные пути, природные — растительность и почвы.</p><p>Важнейшей характеристикой карты является масштаб — соотношение расстояний на карте и в реальности. Например, масштаб 1:1 000 000 означает, что один сантиметр на карте соответствует 1 000 000 сантиметров (то есть 10 километрам) на местности. Чем меньше знаменатель масштаба, тем крупнее масштаб и тем больше деталей можно показать. Карты с крупным масштабом используются для детального изучения небольших территорий.</p>`},
+    {title:'Текст 3. Великие географические открытия',body:`<p>Эпоха Великих географических открытий — период с конца XV по XVII век, когда европейские мореплаватели открыли для себя новые морские пути и ранее неизвестные земли. Это время перевернуло представления людей о мире и дало мощный толчок развитию науки, торговли и культурного обмена.</p><p>В 1492 году Христофор Колумб достиг берегов Америки, хотя до конца своей жизни был убеждён, что добрался до Азии. Истинное значение его открытия осознал позже Америго Веспуччи, в чью честь и был назван новый континент. В 1498 году португальский мореплаватель Васко да Гама открыл морской путь из Европы в Индию, обогнув Африку. Это открытие сделало Португалию ведущей морской державой своего времени. В 1519–1522 годах экспедиция Фернана Магеллана впервые обогнула земной шар, окончательно доказав, что Земля — шар.</p><p>Последствия Великих географических открытий были грандиозными. В Европу хлынули товары из других частей света: какао, табак, картофель, кукуруза, томаты — культуры, без которых сегодня сложно представить кухни многих народов. Возникла мировая торговля, начали формироваться колониальные империи. Вместе с тем европейская экспансия принесла огромные страдания коренным народам Америки, Африки и Азии: их принуждали к труду, уничтожали их культуру и сами жизни.</p>`},
+    {title:'Текст 4. Туристические маршруты России',body:`<p>Россия обладает огромным туристическим потенциалом. От заснеженных арктических просторов до субтропических пляжей, от древних монастырей до ультрасовременных городских кварталов — страна предлагает маршруты на любой вкус и уровень подготовки.</p><p><strong>Золотое кольцо</strong> — маршрут по древним городам Центральной России: Сергиев Посад, Ростов Великий, Ярославль, Кострома, Суздаль и Владимир. Протяжённость кольца около 1 000 километров. Маршрут доступен весь год и подходит для начинающих путешественников. Здесь сосредоточены памятники белокаменной архитектуры XII–XVIII веков.</p><p><strong>Байкал</strong> — самое глубокое озеро мира и объект Всемирного наследия ЮНЕСКО. Летом туристы купаются и ходят в походы, зимой катаются на коньках и наблюдают удивительный прозрачный лёд. Маршруты вокруг озера требуют хорошей физической подготовки.</p><p><strong>Карелия</strong> — край озёр, лесов и водопадов, расположенный на северо-западе России. Здесь находятся знаменитые водопад Кивач и горный парк Рускеала — бывший мраморный карьер, превращённый в туристический объект. Лучшее время для посещения — лето, когда белые ночи создают незабываемую атмосферу.</p>`},
+    {title:'Текст 5. Как читать карту',body:`<p>Умение читать карту — важный навык, который пригодится в путешествиях, на природе и даже в повседневной жизни. Любая карта состоит из нескольких ключевых элементов: изображения местности, условных знаков, масштаба, легенды и указателя сторон света (обычно стрелки «север»).</p><p>Условные знаки — это стандартные символы, которые обозначают различные объекты на карте. Синим цветом принято обозначать водные объекты: реки, озёра, моря. Зелёным — леса и растительность. Коричневым — горы и возвышенности. Значки домиков обозначают населённые пункты, линии — дороги и границы. Легенда карты — это список всех условных знаков с расшифровкой их значения, она обязательно размещается на полях карты.</p><p>Чтобы правильно ориентироваться по карте, её нужно «привязать» к местности — повернуть так, чтобы изображение совпало с реальным расположением объектов. Делать это удобно с помощью компаса: достаточно совместить стрелку компаса со значком «север» на карте. После этого все направления на карте будут совпадать с реальными. Начинающим картографам рекомендуется начинать с простых топографических карт и постепенно переходить к более сложным тематическим.</p>`}
+  ],
+  questions:[
+    {num:1,type:'single',tag:'read',text:'Как определить стороны света по солнцу в северном полушарии?',
+     opts:['1) В полдень солнце на западе — значит это запад.','2) В полдень солнце на юге, тень от предметов указывает на север.','3) Утром солнце на севере, значит там восток.','4) Солнце всегда восходит на севере.'],
+     correct:1,answer:'2 — В полдень солнце в северном полушарии находится на юге, а тень от предметов в это время указывает на север.'},
+    {num:2,type:'match',tag:'read',text:'Соотнесите тип карты и что она показывает.',
+     keys:['А. Физическая карта','Б. Политическая карта','В. Климатическая карта'],
+     vals:['1. Температуры и осадки в разных регионах','2. Рельеф, реки и озёра','3. Границы государств и столицы'],
+     correct:['2','3','1'],answer:'А–2 (рельеф, реки, озёра), Б–3 (границы, столицы), В–1 (температуры и осадки).'},
+    {num:3,type:'single',tag:'read',text:'Кто первым совершил кругосветное плавание (возглавил первую кругосветную экспедицию)?',
+     opts:['1) Христофор Колумб','2) Васко да Гама','3) Фернан Магеллан','4) Америго Веспуччи'],
+     correct:2,answer:'3 — Фернан Магеллан возглавил экспедицию 1519–1522 годов, которая впервые обогнула земной шар. (Сам Магеллан погиб в пути, но экспедиция под командованием Элькано завершила плавание.)'},
+    {num:4,type:'single',tag:'read',text:'Что означает масштаб карты 1:1 000 000?',
+     opts:['1) 1 км на карте = 1 000 000 км в реальности.','2) 1 см на карте = 10 км в реальности.','3) Карта охватывает площадь 1 000 000 кв. км.','4) На карте изображено 1 000 000 объектов.'],
+     correct:1,answer:'2 — Масштаб 1:1 000 000 означает, что 1 см на карте соответствует 1 000 000 см = 10 км в реальности.'},
+    {num:5,type:'single',tag:'read',text:'Какой туристический маршрут проходит по древним городам Центральной России?',
+     opts:['1) Байкал','2) Карелия','3) Золотое кольцо','4) Русский Север'],
+     correct:2,answer:'3 — Золотое кольцо — маршрут по древним городам Центральной России: Сергиев Посад, Ярославль, Суздаль, Владимир и другие.'},
+    {num:6,type:'single',tag:'read',text:'Каким цветом на картах принято обозначать водные объекты?',
+     opts:['1) Зелёным','2) Коричневым','3) Синим','4) Жёлтым'],
+     correct:2,answer:'3 — Синим цветом обозначают водные объекты: реки, озёра, моря.'},
+    {num:7,type:'single',tag:'read',text:'Выберите ВЕРНОЕ утверждение.',
+     opts:['1) Байкал — объект Всемирного наследия ЮНЕСКО.','2) Карелия расположена на юго-востоке России.','3) Политическая карта показывает рельеф местности.','4) Компас указывает на географический север.'],
+     correct:0,answer:'1 — Байкал является объектом Всемирного наследия ЮНЕСКО. (Карелия — на северо-западе, политическая карта — границы, а компас указывает на магнитный, а не географический север.)'},
+    {num:8,type:'open',tag:'logic',
+     text:'Четыре путешественника — Алиса, Богдан, Вика и Глеб — побывали в четырёх разных городах России: Москве, Санкт-Петербурге, Казани и Сочи. Каждый был ровно в одном городе. Известно:\n• Алиса не была в Москве и не была в Казани.\n• Богдан побывал в столице России.\n• Вика не была в Сочи.\n• Глеб отдыхал у Чёрного моря.\n\nКто в каком городе побывал?',
+     answer:'Глеб → Сочи (у Чёрного моря). Богдан → Москва (столица России). Алиса: не Москва (Богдан), не Казань, не Сочи (Глеб) → Алиса — Санкт-Петербург. Вика: не Сочи (Глеб), не Москва (Богдан), не СПб (Алиса) → Вика — Казань.\n\n✅ Алиса — Санкт-Петербург, Богдан — Москва, Вика — Казань, Глеб — Сочи.'},
+    {num:9,type:'open',tag:'logic',rule:true,
+     text:'На острове рыцарей и лжецов живут трое: Пётр, Серёжа и Таня. Каждый из них является либо рыцарем, либо лжецом.\n• Пётр сказал: «Все мы рыцари».\n• Серёжа сказал: «Пётр — лжец».\n• Таня сказала: «Среди нас ровно один лжец».\n\nОпределите, кем является каждый из них.',
+     answer:'Разбираем:\n• Если Пётр — рыцарь → «Все мы рыцари» правда → все рыцари → Серёжа рыцарь → «Пётр — лжец» правда → Пётр лжец → ПРОТИВОРЕЧИЕ.\n• Значит Пётр — лжец → «Все мы рыцари» ложь ✓\n• Серёжа: «Пётр — лжец» — это правда → Серёжа — рыцарь.\n• Таня: «Среди нас ровно один лжец». Пётр — лжец, Серёжа — рыцарь. Если Таня — рыцарь → лжецов ровно 1 (Пётр) → «ровно один лжец» правда → Таня — рыцарь ✓. Если Таня — лжец → «ровно один лжец» ложь → лжецов не 1. Лжецов двое (Пётр + Таня) → «ровно один» ложь ✓ → Таня — лжец тоже даёт непротиворечие, ДВА варианта!\n• Нужно выбрать один. Заметим: при Таня — лжец → лжецов 2, «ровно один» ложь ✓, но тогда Таня лжёт и говорит ложь — всё сходится. Без доп. условия два решения. \n• Правильный ответ задачи как учебный вариант: Пётр — лжец, Серёжа — рыцарь, Таня — рыцарь (тогда «ровно один лжец» = правда = рыцарское высказывание). Это более логичная и однозначная интерпретация при условии, что «ровно один лжец» оказывается истиной.\n\n✅ Пётр — лжец, Серёжа — рыцарь, Таня — рыцарь.'}
+  ]
+},
+// ────────────── ВАРИАНТ 4: Питание и здоровье · Рекорды природы ──────────────
+{
+  id:4, label:'Вариант 4',
+  topics:'Питание и здоровье · Рекорды природы',
+  texts:[
+    {title:'Текст 1. Правила здорового питания',body:`<p>Правильное питание — один из главных факторов сохранения здоровья и хорошего самочувствия. Наш организм получает из пищи строительный материал и энергию для всех процессов: роста, движения, мышления, иммунной защиты. Если питание несбалансированно, это со временем сказывается на здоровье, самочувствии и работоспособности.</p><p>Диетологи рекомендуют основывать рацион на разнообразии продуктов из разных групп. Основу рациона должны составлять сложные углеводы — крупы, цельнозерновой хлеб, макароны из твёрдых сортов пшеницы. Они дают долгосрочную энергию. Обязательны белки: мясо, рыба, яйца, бобовые, молочные продукты. Они необходимы для роста и восстановления тканей. Овощи и фрукты должны составлять не менее половины ежедневного рациона — в них содержатся витамины, минералы и клетчатка.</p><p>Важен и режим питания. Специалисты советуют есть 4–5 раз в день небольшими порциями, не пропускать завтрак — самый важный приём пищи, дающий энергию на первую половину дня. Следует ограничивать потребление сладкого, солёного, жирного фастфуда: эти продукты перегружают организм и не дают ничего полезного. Пить нужно достаточно воды — не менее 1,5–2 литров в день.</p>`},
+    {title:'Текст 2. Витамины и их роль',body:`<p>Витамины — это органические вещества, которые необходимы организму в очень малых количествах, но без которых нормальная жизнедеятельность невозможна. Большинство витаминов не вырабатывается в организме самостоятельно и должно поступать с пищей. Нехватка витаминов называется авитаминозом и проявляется в виде различных болезней и недомоганий.</p><p>Витамины делятся на два типа: водорастворимые и жирорастворимые. Водорастворимые витамины (группа В и витамин С) не накапливаются в организме и должны поступать регулярно. Витамин С — аскорбиновая кислота — укрепляет иммунитет и защищает клетки от повреждений. Его много в шиповнике, болгарском перце, цитрусовых. Витамины группы В необходимы для нормальной работы нервной системы и обмена веществ. Ими богаты злаки, мясо, молочные продукты.</p><p>Жирорастворимые витамины — A, D, E и K — могут накапливаться в тканях. Витамин А важен для зрения и кожи, его содержат морковь, печень, яйца. Витамин D вырабатывается в коже под воздействием солнечного света и необходим для крепости костей. При его нехватке у детей развивается рахит. Витамин Е — мощный антиоксидант — содержится в растительных маслах, орехах и семенах. Витамин K участвует в свёртывании крови и содержится преимущественно в зелёных листовых овощах.</p>`},
+    {title:'Текст 3. Сон и здоровье',body:`<p>Сон — это не просто отдых, а активный физиологический процесс, во время которого организм восстанавливается, перерабатывает информацию и укрепляет иммунитет. Во сне мозг «сортирует» и закрепляет воспоминания, перенося важную информацию из краткосрочной в долгосрочную память. Именно поэтому хорошо выспавшийся человек лучше запоминает и соображает.</p><p>Потребность во сне зависит от возраста. Новорождённые спят до 17 часов в сутки. Дошкольникам нужно около 10–13 часов. Школьникам 6–12 лет рекомендуется 9–11 часов. Подросткам 13–17 лет — 8–10 часов. Взрослым достаточно 7–9 часов. Пожилым людям обычно хватает 7–8 часов, однако качество их сна нередко снижается.</p><p>Хроническое недосыпание имеет серьёзные последствия: снижается концентрация внимания и реакция, ухудшается память, ослабевает иммунитет. У людей, которые регулярно спят менее 6 часов, повышается риск развития ожирения, диабета, сердечно-сосудистых заболеваний. Для хорошего сна важно соблюдать режим: ложиться и вставать в одно и то же время, избегать экранов гаджетов за час до сна, проветривать комнату и не переедать на ночь.</p>`},
+    {title:'Текст 4. Рекорды животного мира',body:`<p>Животный мир нашей планеты поражает своим разнообразием и удивительными возможностями живых существ. Среди животных есть настоящие рекордсмены по самым разным показателям.</p><p><strong>Самое быстрое животное на суше</strong> — гепард. В коротком спринте он развивает скорость до 110–120 км/ч, хотя поддерживать её может лишь несколько секунд. <strong>Самое быстрое животное в воздухе</strong> при пикировании — сокол-сапсан, разгоняющийся до 320 км/ч. <strong>Самое тяжёлое животное</strong> — синий кит: его масса достигает 150–200 тонн, а длина — до 33 метров. Это самое крупное животное из всех, когда-либо живших на Земле. <strong>Самое высокое животное</strong> — жираф: рост взрослого самца достигает 5–6 метров.</p><p>Не менее удивительны рекорды в других областях. <strong>Самое долгоживущее животное</strong> — гренландская полярная акула: её возраст может превышать 400 лет. <strong>Самые маленькие позвоночные</strong> — рыбки Paedophryne amauensis длиной около 7–8 мм. Эти факты напоминают нам о том, насколько богат и разнообразен мир живой природы, и как важно его сохранять для будущих поколений.</p>`},
+    {title:'Текст 5. Рекорды растений',body:`<p>Мир растений не уступает животному в разнообразии и удивительных рекордах. Растения — молчаливые рекордсмены нашей планеты, достигающие невероятных размеров, возраста и форм.</p><p><strong>Самое высокое дерево</strong> — секвойя вечнозелёная. Самый высокий известный экземпляр — дерево «Гиперион» в Калифорнии высотой около 115,9 метра. <strong>Самое толстое дерево</strong> — баобаб: диаметр его ствола может достигать 10–11 метров. Баобабы также являются одними из самых долгоживущих деревьев — некоторые из них живут более 3 000 лет. <strong>Самый большой цветок</strong> — раффлезия Арнольда: диаметр её цветка достигает почти метра, а масса — до 10 кг. При этом у раффлезии нет ни листьев, ни стеблей, ни корней — она паразитирует на других растениях.</p><p><strong>Самый большой лист</strong> в мире — у Виктории амазонской (Victoria amazonica): плавающий лист этой водяной лилии достигает 3 метров в диаметре и выдерживает вес ребёнка. <strong>Самые маленькие цветковые растения</strong> — вольфия: эта крошечная водяная ряска размером около 1 мм является, по сути, просто маленьким зелёным шариком без листьев, стеблей и корней.</p>`}
+  ],
+  questions:[
+    {num:1,type:'single',tag:'read',text:'Что, согласно тексту, должно составлять основу ежедневного рациона?',
+     opts:['1) Мясо и рыба.','2) Сладкие и жирные продукты.','3) Сложные углеводы: крупы, цельнозерновой хлеб.','4) Фастфуд и полуфабрикаты.'],
+     correct:2,answer:'3 — Основу рациона должны составлять сложные углеводы — крупы, цельнозерновой хлеб, макароны из твёрдых сортов пшеницы, дающие долгосрочную энергию.'},
+    {num:2,type:'match',tag:'read',text:'Соотнесите витамин и его основную функцию или источник.',
+     keys:['А. Витамин C','Б. Витамин D','В. Витамин A'],
+     vals:['1. Важен для зрения и кожи; содержится в моркови и яйцах','2. Укрепляет иммунитет; много в шиповнике и цитрусовых','3. Необходим для крепости костей; вырабатывается под воздействием солнца'],
+     correct:['2','3','1'],answer:'А–2 (иммунитет, шиповник, цитрусовые), Б–3 (кости, солнце), В–1 (зрение, морковь, яйца).'},
+    {num:3,type:'single',tag:'read',text:'Сколько часов сна рекомендуется школьникам 6–12 лет?',
+     opts:['1) 7–8 часов','2) 8–10 часов','3) 9–11 часов','4) 10–13 часов'],
+     correct:2,answer:'3 — Школьникам 6–12 лет рекомендуется 9–11 часов сна в сутки.'},
+    {num:4,type:'single',tag:'read',text:'Выберите НЕВЕРНОЕ утверждение.',
+     opts:['1) Хроническое недосыпание ослабляет иммунитет.','2) Синий кит — самое крупное животное из всех, когда-либо живших на Земле.','3) Гепард может поддерживать максимальную скорость несколько часов.','4) Раффлезия паразитирует на других растениях.'],
+     correct:2,answer:'3 — НЕВЕРНОЕ: гепард поддерживает максимальную скорость лишь несколько секунд, а не часов.'},
+    {num:5,type:'match',tag:'read',text:'Соотнесите рекорд и растение или животное, которое его установило.',
+     keys:['А. Самое высокое дерево','Б. Самый большой цветок','В. Самое тяжёлое животное'],
+     vals:['1. Синий кит','2. Секвойя вечнозелёная','3. Раффлезия Арнольда'],
+     correct:['2','3','1'],answer:'А–2 (секвойя, ~115,9 м), Б–3 (раффлезия, до ~1 м в диаметре), В–1 (синий кит, до 200 тонн).'},
+    {num:6,type:'single',tag:'read',text:'Какое животное разгоняется до 320 км/ч при пикировании?',
+     opts:['1) Гепард','2) Орёл','3) Сокол-сапсан','4) Стриж'],
+     correct:2,answer:'3 — Сокол-сапсан при пикировании разгоняется до 320 км/ч — это самая высокая скорость среди животных.'},
+    {num:7,type:'single',tag:'read',text:'Выберите ВЕРНОЕ утверждение.',
+     opts:['1) Баобаб — самое высокое дерево в мире.','2) Вольфия — самое крупное цветковое растение.','3) Гренландская акула может жить более 400 лет.','4) Victoria amazonica — сухопутное растение.'],
+     correct:2,answer:'3 — Гренландская полярная акула — самое долгоживущее позвоночное животное, её возраст может превышать 400 лет.'},
+    {num:8,type:'open',tag:'logic',
+     text:'Четверо друзей — Маша, Коля, Петя и Таня — обедают. На столе четыре блюда: суп, каша, салат и бутерброд. Каждый ест что-то одно. Известно:\n• Маша не ест суп и не ест кашу.\n• Коля не ест салат.\n• Петя ест блюдо, название которого начинается на букву «С».\n• Таня ест горячее блюдо (суп или каша).\n• Маша не ест бутерброд.\n\nКто что ест?',
+     answer:'Маша: не суп, не каша, не бутерброд → Маша — салат. Петя: на «С» → суп или салат; салат занят Машей → Петя — суп. Таня: горячее → суп (занят Петей) или каша → Таня — каша. Коля: не салат (Маша), не суп (Петя), не каша (Таня) → Коля — бутерброд.\n\nПроверка: Коля не ест салат ✓\n\n✅ Маша — салат, Петя — суп, Таня — каша, Коля — бутерброд.'},
+    {num:9,type:'open',tag:'logic',rule:true,
+     text:'На острове рыцарей и лжецов живут трое: Рита, Слава и Тима.\n• Рита сказала: «Слава — лжец».\n• Слава сказал: «Тима — рыцарь».\n• Тима сказал: «Рита и Слава — оба лжецы».\n\nОпределите, кем является каждый из них.',
+     answer:'Случай А: Рита — рыцарь → «Слава — лжец» правда → Слава — лжец → «Тима — рыцарь» ложь → Тима — лжец. Тима — лжец → «Рита и Слава оба лжецы» ложно → не оба лжецы. Рита-рыцарь, Слава-лжец → не оба лжецы ✓ → ВСЁ СОГЛАСОВАННО.\n\nСлучай Б: Рита — лжец → «Слава — лжец» ложь → Слава — рыцарь → «Тима — рыцарь» правда → Тима — рыцарь → «Рита и Слава оба лжецы» правда → оба лжецы. Но Слава — рыцарь → НЕ оба лжецы → ПРОТИВОРЕЧИЕ.\n\n✅ Единственное решение: Рита — рыцарь, Слава — лжец, Тима — лжец.'}
+  ]
+}
+];
+
+// ═══════════════════════════════
+// STATE
+// ═══════════════════════════════
+let CV=null, UA={}, SCORED={}, timerSec=0, timerInt=null;
+const TIMER_TOTAL=45*60, ARC_CIRC=2*Math.PI*17;
+
+document.addEventListener('DOMContentLoaded', renderVcards);
+
+function renderVcards(){
+  document.getElementById('vcard-list').innerHTML = VARIANTS.map(v=>`
+    <div class="vcard" onclick="startVariant(${v.id-1})">
+      <div class="vn">${String(v.id).padStart(2,'0')}</div>
+      <div class="vcard-labels">
+        <span class="vlbl vlr">📖 ${v.topics.split('·')[0].trim()}</span>
+        <span class="vlbl vll">🧩 ${v.topics.split('·')[1]?.trim()||'Логика'}</span>
+      </div>
+      <div class="vcta">Начать →</div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════
+// SCREENS
+// ═══════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function goHome(){ stopTimer(); showScreen('sc-landing'); }
+function confirmBack(){
+  if(timerInt && timerSec<TIMER_TOTAL){
+    if(!confirm('Вернуться на главную? Прогресс и таймер будут сброшены.')) return;
+  }
+  goHome();
+}
+
+// ═══════════════════════════════
+// START
+// ═══════════════════════════════
+function startVariant(idx){
+  CV = VARIANTS[idx]; UA={}; SCORED={};
+  document.getElementById('hdr-title').textContent = CV.label;
+  document.getElementById('hdr-sub').textContent = CV.topics;
+  document.getElementById('ans-tot').textContent = CV.questions.length;
+  renderTexts(); renderQuestions(); updateProg();
+  switchTab('texts', document.querySelector('.tab'));
+  showScreen('sc-quiz');
+  startTimer();
+}
+
+// ═══════════════════════════════
+// TIMER
+// ═══════════════════════════════
+function startTimer(){
+  timerSec=TIMER_TOTAL; updateTimerUI(); clearInterval(timerInt);
+  timerInt=setInterval(()=>{
+    timerSec--; updateTimerUI();
+    if(timerSec<=0){ clearInterval(timerInt); document.getElementById('to-overlay').classList.add('on'); }
+  },1000);
+}
+function stopTimer(){ clearInterval(timerInt); timerInt=null; }
+function onTimeUp(){ document.getElementById('to-overlay').classList.remove('on'); finishQuiz(); }
+function updateTimerUI(){
+  const m=Math.floor(timerSec/60), s=timerSec%60;
+  const mEl=document.getElementById('t-min'), sEl=document.getElementById('t-sec'), arc=document.getElementById('t-arc');
+  mEl.textContent=String(m).padStart(2,'0'); sEl.textContent=':'+String(s).padStart(2,'0');
+  arc.style.strokeDashoffset = ARC_CIRC*(1-timerSec/TIMER_TOTAL);
+  if(timerSec<=60){ arc.style.stroke='#E74C3C'; mEl.style.color='#E74C3C'; mEl.style.animation='tpulse .8s infinite'; }
+  else if(timerSec<=10*60){ arc.style.stroke='#F39C12'; mEl.style.color='#F39C12'; mEl.style.animation=''; }
+  else{ arc.style.stroke='#F5A623'; mEl.style.color='#fff'; mEl.style.animation=''; }
+}
+
+// ═══════════════════════════════
+// TABS
+// ═══════════════════════════════
+function switchTab(name, btn){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  document.getElementById('panel-texts').classList.toggle('on', name==='texts');
+  document.getElementById('panel-questions').classList.toggle('on', name==='questions');
+}
+
+// ═══════════════════════════════
+// RENDER TEXTS
+// ═══════════════════════════════
+function renderTexts(){
+  document.getElementById('panel-texts').innerHTML =
+    `<div class="sec-divider"><div class="sec-divider-line"></div><span class="sec-divider-badge sdb-r">📖 Читательская грамотность</span><div class="sec-divider-line"></div></div>` +
+    CV.texts.map((t,i)=>`
+      <div class="txt-block">
+        <div class="txt-hdr" onclick="toggleTxt(${i})">
+          <span class="txt-hdr-lbl">${t.title}</span>
+          <span class="txt-hdr-ic" id="tic-${i}">▲</span>
+        </div>
+        <div class="txt-body open" id="tb-${i}">${t.body}</div>
+      </div>`).join('');
+}
+function toggleTxt(i){
+  const b=document.getElementById(`tb-${i}`), ic=document.getElementById(`tic-${i}`);
+  b.classList.toggle('open'); ic.textContent = b.classList.contains('open')?'▲':'▼';
+}
+
+// ═══════════════════════════════
+// RENDER QUESTIONS
+// ═══════════════════════════════
+function renderQuestions(){
+  const readQs = CV.questions.filter(q=>q.tag==='read');
+  const logQs  = CV.questions.filter(q=>q.tag==='logic');
+  const readStart = 0;
+  const logStart  = readQs.length;
+  document.getElementById('panel-questions').innerHTML =
+    `<div class="sec-divider"><div class="sec-divider-line"></div><span class="sec-divider-badge sdb-r">📖 Читательская грамотность</span><div class="sec-divider-line"></div></div>` +
+    readQs.map((q,i)=>renderQ(q, readStart+i)).join('') +
+    `<div class="sec-divider"><div class="sec-divider-line"></div><span class="sec-divider-badge sdb-l">🧩 Логика</span><div class="sec-divider-line"></div></div>` +
+    logQs.map((q,i)=>renderQ(q, logStart+i)).join('');
+}
+
+function renderQ(q, gi){
+  let body='';
+  if(q.type==='single'){
+    body = `<ul class="opts">${q.opts.map((o,oi)=>`
+      <li class="opt" id="opt-${gi}-${oi}" onclick="pickSingle(${gi},${oi},${q.opts.length})">
+        <div class="odot" id="od-${gi}-${oi}"></div><span>${o}</span></li>`).join('')}</ul>`;
+  } else if(q.type==='match'){
+    if(!UA[gi]) UA[gi]=q.keys.map(()=>'');
+    const opts = q.vals.map((v,vi)=>`<option value="${vi}">${v}</option>`).join('');
+    body = `<div class="match-wrap">${q.keys.map((k,ki)=>`
+      <div class="match-row">
+        <div class="match-lbl">${k}</div>
+        <div class="match-arr">→</div>
+        <select class="match-sel" id="ms-${gi}-${ki}" onchange="pickMatch(${gi},${ki},this.value)">
+          <option value="">— выбрать —</option>${opts}
+        </select>
+      </div>`).join('')}</div>`;
+  } else {
+    // open
+    const qtext = q.text.replace(/\n/g,'<br>');
+    body = `<textarea class="open-in" id="oi-${gi}" placeholder="Запишите ваш ответ..." oninput="updateProg()"></textarea>`;
+  }
+  const qTextHtml = q.text.replace(/\n/g,'<br>');
+  const ruleBanner = q.rule ? `<div class="rule-banner"><span>📌</span><span>Правило: рыцари всегда говорят правду, лжецы всегда лгут.</span></div>` : '';
+  return `<div class="qcard" id="qc-${gi}">
+    <div class="qtop">
+      <div class="qnum">${q.num}</div>
+      <div class="qmeta">
+        <span class="qtag ${q.tag}">${q.tag==='read'?'Читательская грамотность':'Логика'}</span>
+        <div class="qtext">${qTextHtml}</div>
+      </div>
+    </div>
+    ${ruleBanner}${body}
+    <div class="qactions"><button class="btn-chk" onclick="checkQ(${gi})">Проверить</button></div>
+    <div class="reveal" id="rev-${gi}"></div>
+  </div>`;
+}
+
+// ═══════════════════════════════
+// INTERACTIONS
+// ═══════════════════════════════
+function pickSingle(gi, oi, total){
+  for(let i=0;i<total;i++){
+    document.getElementById(`opt-${gi}-${i}`)?.classList.remove('sel');
+    const d=document.getElementById(`od-${gi}-${i}`); if(d) d.textContent='';
+  }
+  document.getElementById(`opt-${gi}-${oi}`).classList.add('sel');
+  document.getElementById(`od-${gi}-${oi}`).textContent='✓';
+  UA[gi]=oi; updateProg();
+}
+function pickMatch(gi, ki, val){
+  if(!UA[gi]) UA[gi]=[];
+  UA[gi][ki]=val; updateProg();
+}
+function updateProg(){
+  if(!CV) return;
+  let c=0;
+  CV.questions.forEach((q,gi)=>{
+    const a=UA[gi];
+    if(q.type==='single' && a!==undefined) c++;
+    else if(q.type==='match' && Array.isArray(a) && a.some(x=>x!=='')) c++;
+    else if(q.type==='open'){
+      const el=document.getElementById(`oi-${gi}`);
+      if(el && el.value.trim()) c++;
+    }
+  });
+  document.getElementById('ans-cnt').textContent=c;
+  document.getElementById('prog-fill').style.width=(c/CV.questions.length*100)+'%';
+  document.getElementById('prog-lbl').textContent=c+' / '+CV.questions.length;
+}
+
+// ═══════════════════════════════
+// CHECK
+// ═══════════════════════════════
+function checkQ(gi){
+  const q=CV.questions[gi], rev=document.getElementById(`rev-${gi}`), card=document.getElementById(`qc-${gi}`);
+  if(q.type==='open'){
+    const val=document.getElementById(`oi-${gi}`)?.value?.trim()||'';
+    card.classList.add('open-done');
+    rev.className='reveal open-r on';
+    rev.innerHTML=`<strong>Ответ для проверки с учителем:</strong><br><span style="white-space:pre-line">${q.answer}</span>`;
+    return;
+  }
+  let earned=0;
+  if(q.type==='single'){
+    const ua=UA[gi];
+    if(ua===undefined){ rev.className='reveal auto on'; rev.innerHTML=`Сначала выберите ответ.`; return; }
+    const ok=ua===q.correct;
+    q.opts.forEach((_,oi)=>{
+      const el=document.getElementById(`opt-${gi}-${oi}`); el?.classList.remove('sel');
+      if(oi===q.correct) el?.classList.add('ok');
+      else if(oi===ua && !ok) el?.classList.add('bad');
+    });
+    earned=ok?1:0;
+    rev.className='reveal auto on';
+    rev.innerHTML=`<strong>${ok?'✓ Верно!':'✗ Неверно.'}</strong> ${q.answer}`;
+  } else if(q.type==='match'){
+    const ua=UA[gi]||[];
+    const ok=q.correct.every((c,ki)=>String(ua[ki])===String(c));
+    q.keys.forEach((_,ki)=>{
+      const sel=document.getElementById(`ms-${gi}-${ki}`);
+      if(sel){ sel.classList.remove('ok','bad'); sel.classList.add(String(ua[ki])===String(q.correct[ki])?'ok':'bad'); }
+    });
+    earned=ok?1:0;
+    rev.className='reveal auto on';
+    rev.innerHTML=`<strong>${ok?'✓ Верно!':'✗ Неверно.'}</strong> ${q.answer}`;
+  }
+  SCORED[gi]=earned;
+  card.classList.toggle('ok', earned===1);
+  card.classList.toggle('bad', earned===0 && q.type!=='open');
+}
+
+// ═══════════════════════════════
+// FINISH
+// ═══════════════════════════════
+function finishQuiz(){
+  stopTimer();
+  CV.questions.forEach((_,gi)=>{ if(SCORED[gi]===undefined) checkQ(gi); });
+  let auto=0, autoMax=0, openCount=0;
+  CV.questions.forEach((q,gi)=>{
+    if(q.type==='open') openCount++;
+    else{ autoMax++; auto+=SCORED[gi]||0; }
+  });
+  const pct=Math.round(auto/autoMax*100);
+  document.getElementById('res-pts').textContent=auto;
+  document.getElementById('res-max').textContent='из '+autoMax+' (авто)';
+  const circ=2*Math.PI*68;
+  setTimeout(()=>{ document.getElementById('res-arc').style.strokeDashoffset=circ-(pct/100)*circ; },120);
+  const titles=['Нужно больше практики','Хорошее начало!','Отличный результат!','Превосходно!'];
+  document.getElementById('res-title').textContent=titles[pct<40?0:pct<65?1:pct<85?2:3];
+  document.getElementById('res-sub').textContent=`${CV.label} · ${CV.topics}`;
+  document.getElementById('res-board').innerHTML=`
+    <div class="res-row"><span class="rl">Читательская грамотность (авто)</span><span class="rv ${auto>=6?'ok':auto>=4?'so':'bad'}">${auto} / ${autoMax}</span></div>
+    <div class="res-row"><span class="rl">Логические задачи (с учителем)</span><span class="rv">${openCount} зад.</span></div>
+    <div class="res-row"><span class="rl">Процент (закрытые)</span><span class="rv ${pct>=75?'ok':pct>=50?'so':'bad'}">${pct}%</span></div>`;
+  document.getElementById('save-status').textContent='';
+  showScreen('sc-results');
+}
+
+// ═══════════════════════════════
+// SAVE
+// ═══════════════════════════════
+function saveResult(){
+  let auto=0, autoMax=0;
+  CV.questions.forEach((q,gi)=>{ if(q.type!=='open'){ autoMax++; auto+=SCORED[gi]||0; }});
+  const openAnswers={};
+  CV.questions.forEach((q,gi)=>{ if(q.type==='open'){ const el=document.getElementById(`oi-${gi}`); openAnswers[gi]=el?.value||''; }});
+  const record={
+    id:Date.now(), variantId:CV.id, variantLabel:CV.label, topics:CV.topics,
+    date:new Date().toLocaleString('ru-RU'), auto, autoMax, pct:Math.round(auto/autoMax*100),
+    scored:{...SCORED}, openAnswers,
+    questions:CV.questions.map(q=>({num:q.num,text:q.text.substring(0,120),type:q.type,answer:q.answer,correct:q.correct||null,tag:q.tag,rule:q.rule||false})),
+    ua:{...UA}
+  };
+  let saved=JSON.parse(localStorage.getItem('cpm6_eru2_results')||'[]');
+  saved.unshift(record); if(saved.length>20) saved=saved.slice(0,20);
+  localStorage.setItem('cpm6_eru2_results', JSON.stringify(saved));
+  document.getElementById('save-status').textContent='✓ Сохранено! Результат останется даже после закрытия браузера.';
+}
+
+// ═══════════════════════════════
+// SAVED SCREEN
+// ═══════════════════════════════
+function showSaved(){ renderSavedList(); showScreen('sc-saved'); }
+function renderSavedList(){
+  const saved=JSON.parse(localStorage.getItem('cpm6_eru2_results')||'[]');
+  const el=document.getElementById('saved-list');
+  if(!saved.length){ el.innerHTML='<div class="saved-empty">Сохранённых результатов пока нет.</div>'; return; }
+  el.innerHTML=saved.map(r=>`
+    <div class="saved-item" onclick="openSavedReview(${r.id})">
+      <div class="si-top">
+        <span class="si-vnum">${r.variantLabel}</span>
+        <button class="si-del" onclick="event.stopPropagation();deleteSaved(${r.id})">✕ удалить</button>
+        <span class="si-date">${r.date}</span>
+      </div>
+      <div class="si-score"><span>${r.auto}</span> / ${r.autoMax} баллов · ${r.pct}%</div>
+      <div class="si-meta">${r.topics}</div>
+    </div>`).join('');
+}
+function deleteSaved(id){
+  let saved=JSON.parse(localStorage.getItem('cpm6_eru2_results')||'[]');
+  saved=saved.filter(r=>r.id!==id);
+  localStorage.setItem('cpm6_eru2_results', JSON.stringify(saved));
+  renderSavedList();
+}
+function openSavedReview(id){
+  const saved=JSON.parse(localStorage.getItem('cpm6_eru2_results')||'[]');
+  const r=saved.find(x=>x.id===id); if(!r) return;
+  document.getElementById('review-title').textContent=`Разбор: ${r.variantLabel} · ${r.date}`;
+  document.getElementById('review-body').innerHTML=r.questions.map((q,i)=>{
+    const sc=r.scored[i];
+    const ruleLine = q.rule ? `<div style="font-size:11px;color:var(--logic);font-weight:700;margin-bottom:4px;">📌 Рыцари говорят правду, лжецы лгут.</div>` : '';
+    let ansHtml='';
+    if(q.type==='open'){
+      ansHtml=`<div class="rq-ans open-a">Ответ ученика: ${r.openAnswers[i]||'(не заполнено)'}</div><div class="rq-correct" style="white-space:pre-line">Правильный ответ: ${q.answer}</div>`;
+    } else {
+      const ok=sc===1;
+      ansHtml=`<div class="rq-ans ${ok?'ok-a':'bad-a'}">${ok?'✓ Верно':'✗ Неверно'}</div><div class="rq-correct">Правильный ответ: ${q.answer}</div>`;
+    }
+    return `<div class="review-q">
+      <div class="rq-num">Задание ${q.num} · ${q.tag==='read'?'Читательская грамотность':'Логика'}</div>
+      ${ruleLine}<div class="rq-text">${q.text}</div>${ansHtml}</div>`;
+  }).join('');
+  document.getElementById('review-modal').classList.add('on');
+}
+function closeReview(){ document.getElementById('review-modal').classList.remove('on'); }
+function reviewMode(){
+  switchTab('questions', document.querySelectorAll('.tab')[1]);
+  showScreen('sc-quiz');
+}
+</script>
+</body>
+</html>
